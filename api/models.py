@@ -38,7 +38,7 @@ class Like(models.Model):
     like_date = models.DateField(auto_now=True, auto_now_add=False)
 
     def __str__(self):
-        return self.like.profile + "유저의 " + self.like.upload + "번 게시글 댓글"
+        return self.like.profile + "유저의 " + self.like.upload + "번 게시글 좋아요"
 
 class Comment(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="comments")
