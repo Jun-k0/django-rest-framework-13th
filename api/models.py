@@ -23,3 +23,11 @@ class Upload(models.Model):
     def __str__(self):
         return self.upload.description
 
+
+class Upload_file(models.Model):
+    upload = models.ForeignKey(Upload, on_delete=models.CASCADE, related_name="upload_files")
+    # MEDIA_ROOT/uploads 에 저장
+    file = models.FileField(upload_to="uploads/")
+
+    def __str__(self):
+        return self.upload_file.upload + "번째 upload의 파일"
