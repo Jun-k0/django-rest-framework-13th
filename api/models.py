@@ -12,3 +12,14 @@ class Profile(models.Model):
     def __str__(self):
         return self.profile.username
 
+class Upload(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="uploads")
+    description = models.TextField(blank=True)
+    upload_date = models.DateField(auto_now=False, auto_now_add=True)
+    like_num = models.IntegerField()
+    comment_num = models.IntegerField()
+    thumbnail = models.ImageField()
+
+    def __str__(self):
+        return self.upload.description
+
