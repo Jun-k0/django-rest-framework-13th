@@ -31,3 +31,11 @@ class Upload_file(models.Model):
 
     def __str__(self):
         return self.upload_file.upload + "번째 upload의 파일"
+
+class Like(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="likes")
+    upload = models.ForeignKey(Upload, on_delete=models.CASCADE, related_name="likes")
+    like_date = models.DateField(auto_now=True, auto_now_add=False)
+
+    def __str__(self):
+        return self.like.profile + "유저의 " + self.like.upload + "번 게시글 댓글"
