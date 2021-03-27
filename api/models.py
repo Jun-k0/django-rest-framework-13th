@@ -10,7 +10,7 @@ class Profile(models.Model):
     post_num = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.profile.username
+        return self.nickname
 
 class Upload(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="uploads")
@@ -21,7 +21,7 @@ class Upload(models.Model):
     thumbnail = models.ImageField()
 
     def __str__(self):
-        return self.upload.description
+        return self.description
 
 
 class Upload_file(models.Model):
@@ -30,7 +30,7 @@ class Upload_file(models.Model):
     file = models.FileField(upload_to="uploads/")
 
     def __str__(self):
-        return self.upload_file.upload + "번째 upload의 파일"
+        return self.upload + "번째 upload의 파일"
 
 class Like(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="likes")
@@ -38,7 +38,7 @@ class Like(models.Model):
     like_date = models.DateField(auto_now=True, auto_now_add=False)
 
     def __str__(self):
-        return self.like.profile + "유저의 " + self.like.upload + "번 게시글 좋아요"
+        return self.profile + "유저의 " + self.upload + "번 게시글 좋아요"
 
 class Comment(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="comments")
@@ -47,4 +47,4 @@ class Comment(models.Model):
     description = models.TextField()
 
     def __str__(self):
-        return self.comment.profile + "유저의 " + self.comment.upload + "번 게시글 댓글"
+        return self.profile + "유저의 " + self.upload + "번 게시글 댓글"
