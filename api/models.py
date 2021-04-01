@@ -22,7 +22,7 @@ class Profile(AbstractUser, DateInfo):
 class Upload(DateInfo):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="uploads")
     description = models.TextField(blank=True)
-    thumbnail = models.ImageField()
+    thumbnail = models.ImageField(null=True)
 
     def __str__(self):
         return self.description
