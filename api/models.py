@@ -11,7 +11,8 @@ class DateInfo(models.Model):
 
 class Profile(AbstractUser, DateInfo):
     userid = models.CharField(max_length=10, verbose_name="아이디", unique=True)
-    password = models.CharField(max_length=10)
+    # superuser에서 충돌이 나 이름변경 password->userpw
+    userpw = models.CharField(max_length=10)
     nickname = models.CharField(max_length=10, unique=True, default="")
     user_image = models.ImageField(blank=True)
 
