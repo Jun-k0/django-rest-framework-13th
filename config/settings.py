@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+AUTH_USER_MODEL = 'api.Profile' # AbstractUser 상속을 위해
+
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'django.contrib.admin',
