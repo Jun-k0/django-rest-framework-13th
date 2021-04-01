@@ -42,6 +42,7 @@ AUTH_USER_MODEL = 'api.Profile' # AbstractUser 상속을 위해
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
+    'rest_framework', # json형식의 api 소통
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
