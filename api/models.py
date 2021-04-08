@@ -37,7 +37,7 @@ class Upload_file(DateInfo):
         return self.upload + "번째 upload의 파일"
 
 class Like(DateInfo):
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="likes")
     upload = models.ForeignKey(Upload, on_delete=models.CASCADE, related_name="likes")
 
     def __str__(self):
