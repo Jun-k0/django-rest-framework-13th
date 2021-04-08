@@ -24,13 +24,13 @@ def upload_list(request):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 '''
-#image 파일 보완필요
+#image 파일 보완필요, 기능 정리 필요
 
 class UserList(APIView):
     def get(self, request, format=None):
         profile = Profile.objects.all()
-        serializer = ProfileSerializer(profile, many=True) # Queryset 일시, many=True
-        return JsonResponse(serializer.data, safe=False)
+        serializer = ProfileSerializer(profile, many=True) # Queryset일 경우 many=True
+        return JsonResponse(serializer.data, safe=False) # python data type이 dict가 아닐 경우 safe=False
     def post(self, request, format=None):
         data = JSONParser().parse(request)
         serializer = ProfileSerializer(data=data)
@@ -53,6 +53,12 @@ class UserUpload(APIView):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
+class UploadList(APIView):
+    def get(self, request, format=None):
+        upload = Upload.objects.all()
+        serializer = UploadListSerializer(upload, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
 class UploadFix(APIView):
     def put(self, request, pk, format=None):
         data = JSONParser().parse(request)
@@ -65,4 +71,4 @@ class UploadFix(APIView):
     def delete(self, request, pk, format=None):
         upload = Upload.objects.get(id=pk)
         upload.delete()
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
