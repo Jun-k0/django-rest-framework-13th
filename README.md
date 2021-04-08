@@ -33,7 +33,7 @@ created_date,update_date - DateInfo 상속
 Upload_id를 FK로 사용함 (1:N관계)  
 file - 업로드한 사진/영상 저장
 #### Comment
-profile_id와 upload_id를 FK로 사용함 ~~(둘다 1:N관계)~~ 각각 1:1,1:N 관계를 맺습니다.    
+profile_id와 upload_id를 FK로 사용함 (둘다 1:N관계)    
 description - 댓글의 본문  
 created_date,update_date - DateInfo 상속   
 ~~comment_date - 수정의 타임스탬프를 뜻하는 AUTO_NOW 옵션 사용(근데 upload_date랑 통일시킬 필요가 있어보입니다)~~
@@ -121,9 +121,10 @@ RESTful한 api를 만들기 위해 DRF(Django Rest Framework)를 설치하고, S
 마이그레이션 수정이 너무 어려워서 처음에 모델링을 잘 해야할 것 같습니다... 다들 이번 주도 화이팅해봐요...👊👊
 ## 4주차 과제 (기한: 4/8 목요일까지)
 ### 모든 list를 가져오는 API
-Method : GET   
-URL : /api/uploads/   
-! 수정하다보니 id가 뒤죽박죽 임미다 !
+
+- Method : GET   
+- URL : /api/uploads/
+#### *수정하다보니 id가 뒤죽박죽 임미다
 ```python
 [
     {
@@ -185,8 +186,8 @@ URL : /api/uploads/
 ```
 
 ### 특정 데이터를 가져오는 API
-Method : GET   
-URL : /api/users/2/uploads/
+- Method : GET   
+- URL : /api/users/2/uploads/
 ```python
 [
     {
@@ -233,9 +234,9 @@ URL : /api/users/2/uploads/
 ]
 ```
 ### 새로운 데이터를 생성하는 API
-Method : POST   
-URL : /api/users/7/uploads/  
-Body : { "description" : "dokiman", "profile" : 7 }
+- Method : POST   
+- URL : /api/users/7/uploads/  
+- Body : { "description" : "dokiman", "profile" : 7 }
 ```python
 {
     "id": 8,
@@ -247,9 +248,9 @@ Body : { "description" : "dokiman", "profile" : 7 }
 }
 ```
 ### 특정 데이터를 업데이트하는 API
-Method : PUT   
-URL : /api/uploads/2    
-Body : { "profile" : 2, "description" : "i am" }
+- Method : PUT   
+- URL : /api/uploads/2    
+- Body : { "profile" : 2, "description" : "i am" }
 ```python
 # 2번 Profile, 2번 Upload
 {
@@ -262,8 +263,8 @@ Body : { "profile" : 2, "description" : "i am" }
 }
 ```
 ### 특정 데이터를 삭제하는 API
-Method : DELETE   
-URL : /api/uploads/2
+- Method : DELETE   
+- URL : /api/uploads/2
 ```python
 Status: 204 No Content
 ```
