@@ -276,3 +276,53 @@ Image파일 관련 좀 더 공부해야함!
 ### 간단한 회고 
 API URL을 어떻게 설정해야 깔끔할지 잘 모르겠다,,,   
 과제를 하면서 ORM, serializer가 헷갈리는 부분이 있어서 복습이 필요할 것 같다.
+
+## 6주차 과제 (기한: 5/13 목요일까지)
+
+### 1. Viewset으로 리팩토링하기
+
+```python
+class ProfileViewSet(viewsets.ModelViewSet):
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
+    
+class UploadViewSet(viewsets.ModelViewSet):
+    serializer_class = UploadSerializer
+    queryset = Upload.objects.all()
+    filter_backends = (DjangoFilterBackend, )
+    filterset_class = UploadFilter
+```
+
+### 2. filter 기능 구현하기
+
+```python
+class UploadFilter(FilterSet):
+    description = filters.CharFilter(field_name="description", lookup_expr="icontains")
+    is_profile = filters.BooleanFilter(method='filter_is_profile')
+
+    class Meta:
+        model = Upload
+        fields = ['id','description','profile']
+
+    def filter_is_profile(self, queryset, name, value):
+        filtered_queryset = queryset.filter(profile=2)
+        return filtered_queryset
+```
+
+### 3. (선택) permission 기능 구현하기
+
+### 4. (선택) validation 적용하기
+
+- 자유롭게 validation 을 만들어 적용해보세요
+- (권장) validator 만들어서 적용해보기
+
+### 5. 배운점
++ DRF의 CBV - 하나의 url에 하나의 view 처리  
++ Generic Views - 하나의 url에 여러 개의 view 처리   
++ Viewsets - 여러 개의 url 패턴에 대해 여러 개의 view 처리  
+#### Filter 옵션 lookup_expr 조건 참고 https://brownbears.tistory.com/63 
+ex) description = filters.CharFilter(field_name="description", lookup_expr="icontains")
+### 6. 간단한 회고
+오랜만에 장고를 다시 쓰니까 많이 헷갈려서 과제하는데 시간이 꽤 걸린 것   
+같습니다... 앞으로 팀 프로젝트 구현을 대비해 장고의 백엔드 전체적인 흐름을 인지하며
+공부하면 좋을 것 같습니다.
