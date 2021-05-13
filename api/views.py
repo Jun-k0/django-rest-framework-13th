@@ -17,13 +17,24 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
 
 
+class UploadFilter(FilterSet):
+    description = filters.CharFilter(field_name="description", lookup_expr="icontains")
+    is_profile = filters.BooleanFilter(method='filter_is_profile')
 
+    class Meta:
+        model = Upload
+        fields = ['id','description','profile']
+
+    def filter_is_profile(self, queryset, name, value):
+        filtered_queryset = queryset.filter(profile=2)
+        return filtered_queryset
 
 
 class UploadViewSet(viewsets.ModelViewSet):
     serializer_class = UploadSerializer
     queryset = Upload.objects.all()
-
+    filter_backends = (DjangoFilterBackend, )
+    filterset_class = UploadFilter
 
 
 ''' FBV 방식
