@@ -20,6 +20,12 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 
 
+class UploadViewSet(viewsets.ModelViewSet):
+    serializer_class = UploadSerializer
+    queryset = Upload.objects.all()
+
+
+
 ''' FBV 방식
 @csrf_exempt # 해킹 방지?
 def upload_list(request):
