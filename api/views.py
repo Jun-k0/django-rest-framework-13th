@@ -1,5 +1,7 @@
 from django.shortcuts import render
-
+from rest_framework import viewsets
+from django_filters.rest_framework import FilterSet, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
@@ -8,6 +10,16 @@ from api.serializers import ProfileSerializer, UploadSerializer, UploadListSeria
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
+
+
+
+
+
 ''' FBV 방식
 @csrf_exempt # 해킹 방지?
 def upload_list(request):
@@ -23,6 +35,7 @@ def upload_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+'''
 '''
 #image 파일 보완필요, 기능 정리 필요
 
@@ -72,3 +85,4 @@ class UploadFix(APIView):
         upload = Upload.objects.get(id=pk)
         upload.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+'''
