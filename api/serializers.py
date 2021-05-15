@@ -19,7 +19,7 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['id', 'description']
 
-class UploadListSerializer(serializers.ModelSerializer): #like, profile fk 추가?
+class UploadListSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
