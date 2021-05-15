@@ -7,20 +7,30 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from api.models import Profile, Upload
 from api.serializers import ProfileSerializer, UploadSerializer, UploadListSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
+
+class IsAuthorPostorUpdate(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+    def has_object_permission(self, request, view, obj):
+        if request.method != 'GET':
+            return obj.profile == request.user
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
 
+
 class UploadFilter(FilterSet):
     description = filters.CharFilter(field_name="description", lookup_expr="icontains")
     is_profile = filters.BooleanFilter(method='filter_is_profile')
     profile = filters.NumberFilter(field_name="profile")
+
     class Meta:
         model = Upload
         fields = ['id', 'description', 'profile']
@@ -33,8 +43,9 @@ class UploadFilter(FilterSet):
 class UploadViewSet(viewsets.ModelViewSet):
     serializer_class = UploadSerializer
     queryset = Upload.objects.all()
-    filter_backends = (DjangoFilterBackend, )
+    filter_backends = (DjangoFilterBackend,)
     filterset_class = UploadFilter
+    permission_classes = (IsAuthorPostorUpdate,)
 
 
 ''' FBV 방식
