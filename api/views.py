@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from api.models import Profile, Upload
 from api.serializers import ProfileSerializer, UploadSerializer, UploadListSerializer
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -16,14 +17,13 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
 
-
 class UploadFilter(FilterSet):
     description = filters.CharFilter(field_name="description", lookup_expr="icontains")
     is_profile = filters.BooleanFilter(method='filter_is_profile')
-
+    profile = filters.NumberFilter(field_name="profile")
     class Meta:
         model = Upload
-        fields = ['id','description','profile']
+        fields = ['id', 'description', 'profile']
 
     def filter_is_profile(self, queryset, name, value):
         filtered_queryset = queryset.filter(profile=2)
