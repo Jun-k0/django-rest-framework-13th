@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from api.models import Profile, Upload
-from api.serializers import ProfileSerializer, UploadSerializer, UploadListSerializer
+from api.serializers import ProfileSerializer, UploadSerializer
 from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -16,14 +16,28 @@ from rest_framework import status
 class IsAuthorPostorUpdate(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated
+
     def has_object_permission(self, request, view, obj):
         if request.method != 'GET':
             return obj.profile == request.user
+        else:
+            return True
+
+
+class ProfileFilter(FilterSet):
+    profile = filters.NumberFilter(field_name="profile")
+
+    class Meta:
+        model = Profile
+        fields = ['id', 'profile']
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = ProfileFilter
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class UploadFilter(FilterSet):
