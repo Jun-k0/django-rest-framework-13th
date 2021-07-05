@@ -41,6 +41,7 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'api.Profile' # AbstractUser 상속을 위해
 
 INSTALLED_APPS = [
+    'drf_yasg',
     'api.apps.ApiConfig', # Api 앱 추가
     'rest_framework', # json형식의 api 소통
     'django_filters', # filterset
