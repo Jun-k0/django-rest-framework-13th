@@ -351,3 +351,189 @@ ex) description = filters.CharFilter(field_name="description", lookup_expr="icon
 오랜만에 장고를 다시 쓰니까 많이 헷갈려서 과제하는데 시간이 꽤 걸린 것   
 같습니다... 앞으로 팀 프로젝트 구현을 대비해 장고의 백엔드 전체적인 흐름을 인지하며
 공부하면 좋을 것 같습니다.
+
+## 최종 점검
+### 
+```python
+view.py
+
+class ProfileFilter(FilterSet):
+    profile = filters.NumberFilter(field_name="profile")
+
+    class Meta:
+        model = Profile
+        fields = ['id', 'profile']
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = ProfileFilter
+    permission_classes = (permissions.IsAuthenticated,)
+
+class IsAuthorPostorUpdate(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        if request.method != 'GET':
+            return obj.profile == request.user
+        else:
+            return True
+
+class UploadFilter(FilterSet):
+    description = filters.CharFilter(field_name="description", lookup_expr="icontains")
+    profile = filters.NumberFilter(field_name="profile")
+
+    class Meta:
+        model = Upload
+        fields = ['id', 'description', 'profile']
+
+
+class UploadViewSet(viewsets.ModelViewSet):
+    serializer_class = UploadSerializer
+    queryset = Upload.objects.all()
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = UploadFilter
+    permission_classes = (IsAuthorPostorUpdate,)
+```
+```json
+URL : api/upload/
+METHOD : GET
+[
+    {
+        "id": 1,
+        "profile": 2,
+        "description": "permisson test2",
+        "thumbnail": null,
+        "upload_files": [],
+        "comments": [
+            {
+                "id": 4,
+                "description": "junki hi 댓",
+                "profile": 2,
+                "upload": 1
+            },
+            {
+                "id": 5,
+                "description": "junki hi 댓2",
+                "profile": 2,
+                "upload": 1
+            }
+        ],
+        "likes": []
+    },
+    {
+        "id": 2,
+        "profile": 2,
+        "description": "i am",
+        "thumbnail": null,
+        "upload_files": [],
+        "comments": [
+            {
+                "id": 6,
+                "description": "junki immm 댓",
+                "profile": 2,
+                "upload": 2
+            }
+        ],
+        "likes": [
+            {
+                "id": 3,
+                "profile": 11,
+                "upload": 2
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "profile": 2,
+        "description": "junki",
+        "thumbnail": null,
+        "upload_files": [],
+        "comments": [],
+        "likes": []
+    },
+    {
+        "id": 8,
+        "profile": 7,
+        "description": "dokiman",
+        "thumbnail": null,
+        "upload_files": [],
+        "comments": [
+            {
+                "id": 7,
+                "description": "dokiman 댓",
+                "profile": 7,
+                "upload": 8
+            }
+        ],
+        "likes": []
+    },
+    {
+        "id": 10,
+        "profile": 11,
+        "description": "Test Validation",
+        "thumbnail": null,
+        "upload_files": [],
+        "comments": [],
+        "likes": []
+    },
+    {
+        "id": 11,
+        "profile": 11,
+        "description": "Test0521",
+        "thumbnail": "http://127.0.0.1:8000/media/%EC%A4%80%EA%B8%B0_QcGUaUS.jpg",
+        "upload_files": [],
+        "comments": [],
+        "likes": []
+    },
+    {
+        "id": 12,
+        "profile": 11,
+        "description": "Test0521",
+        "thumbnail": "http://127.0.0.1:8000/media/KakaoTalk_20180520_163620948.jpg",
+        "upload_files": [
+            {
+                "id": 1,
+                "created_date": "2021-05-21",
+                "update_date": "2021-05-21",
+                "file": "http://127.0.0.1:8000/media/uploads/%EC%A4%80%EA%B8%B0.jpg",
+                "upload": 12
+            },
+            {
+                "id": 2,
+                "created_date": "2021-05-21",
+                "update_date": "2021-05-21",
+                "file": "http://127.0.0.1:8000/media/uploads/KakaoTalk_20180520_163620948.jpg",
+                "upload": 12
+            }
+        ],
+        "comments": [
+            {
+                "id": 8,
+                "description": "되나",
+                "profile": 2,
+                "upload": 12
+            }
+        ],
+        "likes": [
+            {
+                "id": 1,
+                "profile": 2,
+                "upload": 12
+            },
+            {
+                "id": 2,
+                "profile": 7,
+                "upload": 12
+            }
+        ]
+    }
+]
+```
+#### 공부할 것
++jwt   
++viewset의 action   
++썸네일 설정?
